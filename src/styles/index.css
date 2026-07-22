@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@import "./theme.css";
+@import "./base.css";
+@import "./utilities.css";
+
+:root {
+  color-scheme: dark;
+
+  --background: var(--color-background);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-container-high);
+
+  --primary: var(--color-primary);
+
+  --text: var(--color-on-background);
+  --text-secondary: #c8c6c5;
+
+  --border: var(--color-outline-variant);
+}
+
+.light {
+  color-scheme: light;
+
+  --background: #f7f8f7;
+
+  --surface: #ffffff;
+  --surface-elevated: #f1f3f1;
+
+  --primary: #22c55e;
+
+  --text: #101314;
+  --text-secondary: #454a46;
+
+  --border: #dce3dc;
+}
+
+
+
+
+
+

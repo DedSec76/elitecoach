@@ -1,0 +1,40 @@
+
+@utility container-app {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+@utility card-hover {
+  transition: all .3s ease;
+
+  @variant hover {
+    background: var(--surface-hover);
+    border-color: var(--primary);
+  }
+}
+
+@utility glow {
+  box-shadow: var(--shadow-green);
+
+  @variant hover {
+    box-shadow: var(--shadow-green-lg);
+  }
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    90deg,
+    #4be277,
+    #8cffaa
+  );
+
+  -webkit-background-clip: text;
+  color: transparent;
+}
