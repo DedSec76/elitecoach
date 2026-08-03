@@ -14,7 +14,7 @@ export const Navbar = () => {
           <span className="text-headline-md font-headline-md text-primary tracking-tighter uppercase">ELITE COACHING</span>
         </div>
 
-        <div className={`${toggle ? "flex" : "hidden"} bg-background w-full absolute py-4 top-full left-1/2 -translate-x-1/2 transition flex-col gap-stack-lg md:flex-row items-center`}>
+        <div className={`${toggle ? "flex" : "hidden"} bg-background w-full absolute py-4 top-full left-1/2 -translate-x-1/2 transition flex-col gap-stack-lg md:w-auto md:translate-none md:static md:flex md:flex-row items-center`}>
           <a className="font-label-bold text-label-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors duration-200" href="#about">ABOUT</a>
           <a className="font-label-bold text-label-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors duration-200" href="#results">RESULTS</a>
           <a className="font-label-bold text-label-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors duration-200" href="#testimonials">TESTIMONIALS</a>
