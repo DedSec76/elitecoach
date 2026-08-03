@@ -1,6 +1,7 @@
 import { formatDate } from "@/shared/utils/formatDate"
 import { ActionButton } from "../../dashboard/components/ActionButton"
 import { GOALS } from "@/shared/constants/goals";
+import { studentProgressBar } from "../utils/studentProgressBar";
 
 export const StudentCard = ({student, onEdit, onDelete, onView}) => {
     
@@ -8,20 +9,11 @@ export const StudentCard = ({student, onEdit, onDelete, onView}) => {
 
     const goalFind = GOALS.find(g => g.value === goal)?.label ?? "Unfocused"
 
-    const { initial_weight, current_weight, goal_weight }= student
-
-    const total = initial_weight - goal_weight
-    const completed = initial_weight - current_weight
-
-    const progressBar = Math.round(
-        total <= 0
-        ? 0 
-        : Math.min(100, Math.max(0, (completed / total) * 100))
-    );
+    const progressBar = studentProgressBar(student);
 
     return (
         <>
-            <tr className="snap-start hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => onView(student)}>
+            <tr className="hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => onView(student)}>
                 <td className="px-stack-lg py-stack-lg">
                     <div className="flex items-center gap-stack-md">
                         <div className="w-12 h-12 bg-surface-container-highest shrink-0 relative overflow-hidden">
@@ -54,7 +46,7 @@ export const StudentCard = ({student, onEdit, onDelete, onView}) => {
                 
                 {/* Action Buttons */}
                 <td className="px-stack-lg py-stack-lg text-right">
-                    <div className="flex justify-end gap-stack-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-end gap-stack-md md:gap-stack-sm lg:opacity-0 md:group-hover:opacity-100 transition-opacity">
                         <ActionButton  title={"Edit"} type={"edit"} onClick={() => onEdit(student)}/>
 
                         <ActionButton title={"View Profile"} type={"visibility"} onClick={() => onView(student)} />
