@@ -16,6 +16,7 @@ const EMPTY_STUDENT  = {
     goal: "",
     goal_weight: "",
     goal_body_fat: "",
+    goal_duration_weeks: "",
 }
 
 export const StudentForm = ({mode, student, refetch, isModalOpen, setIsModalOpen}) => {
@@ -131,6 +132,11 @@ export const StudentForm = ({mode, student, refetch, isModalOpen, setIsModalOpen
                         <div className="formField">
                             <label>Goal Body Fat (Percentage %)</label>
                             <input onChange={handleChange} className="p-2 bg-on-background/20" name="goal_body_fat" type="number" placeholder="Ej. 15" value={formData?.goal_body_fat} />
+                        </div>
+
+                        <div className="formField">
+                            <label>Goal Duration week</label>
+                            <input onChange={handleChange} className="p-2 bg-on-background/20" name="goal_duration_weeks" type="number" placeholder="Ej. 4" value={formData?.goal_duration_weeks} />
                         </div>
                     </div>
                     

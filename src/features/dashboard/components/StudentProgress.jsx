@@ -1,8 +1,8 @@
+import { QuickActionButton } from "./QuickActionButton"
 
 export const StudentProgress = ({ student: selectedStudent, loading }) => {
-    
     if(!selectedStudent) return
-    
+
     const { full_name, current_weight, goal_weight, current_body_fat, goal_body_fat } = selectedStudent
 
     return (
@@ -87,25 +87,13 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
             <div className="titan-card p-stack-lg mb-10">
                 <h3 className="font-headline-md text-sm font-bold uppercase tracking-widest mb-stack-lg border-l-2 border-primary pl-3">Quick Actions</h3>
                     <div className="flex flex-col gap-stack-sm">
-                        <button className="w-full flex items-center justify-between p-stack-md bg-white/5 hover:bg-primary group transition-all text-left">
-                            <span className="font-label-bold group-hover:text-background">Assign New Routine</span>
-                            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-background" data-icon="playlist_add">playlist_add</span>
-                        </button>
+                        <QuickActionButton name_action={"Assign New Routine"} name_icon="playlist_add" />
 
-                        <button className="w-full flex items-center justify-between p-stack-md bg-white/5 hover:bg-primary group transition-all text-left">
-                            <span className="font-label-bold group-hover:text-background">Log Achievement</span>
-                            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-background" data-icon="emoji_events">emoji_events</span>
-                        </button>
-
-                        <button className="w-full flex items-center justify-between p-stack-md bg-white/5 hover:bg-primary group transition-all text-left">
-                            <span className="font-label-bold group-hover:text-background">Schedule Check-in</span>
-                            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-background" data-icon="calendar_month">calendar_month</span>
-                        </button>
+                        <QuickActionButton name_action={"Log Progress"} name_icon="arrow_upload_progress" />
                         
-                        <button className="w-full flex items-center justify-between p-stack-md bg-white/5 hover:bg-error group transition-all text-left">
-                            <span className="font-label-bold group-hover:text-white">Flag for Review</span>
-                            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-white" data-icon="flag">flag</span>
-                        </button>
+                        <QuickActionButton name_action={"Log Achievement"} name_icon="emoji_events" />
+
+                        <QuickActionButton name_action={"Flag for Review"} name_icon="flag" />
                     </div>
             </div>
         </>

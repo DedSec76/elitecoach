@@ -6,34 +6,34 @@ import { StudentCard } from "../../students/components/StudentCard";
 import { StudentForm } from "../../students/components/StudentForm";
 import { StudentProgress } from "../components/StudentProgress";
 import { MODES } from "@/shared/constants/crudNames";
+import { useMemo } from "react";
 
 export const MainWorkspace = () => {
-    
     // Abrir y cerrar el modal para agregar alumno
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const [mode, setMode] = useState(MODES.CREATE)
     
-    const [selectedStudent, setSelectedStudent] = useState(null)
+    const [selectedStudentId, setSelectedStudentId] = useState(null)
 
     const { data: students, loading, error, refetch } = useFetchData(getStudents)
 
     // Create
     const handleCreate = () => {
-        setSelectedStudent(null);
-        setMode("create");
+        setSelectedStudentId(null);
+        setMode(MODES.CREATE);
         setIsModalOpen(true);
     };
 
     // Read
-    const handleView = (student)=>{
-        setSelectedStudent(student);
+    const handleView = (student) => {
+        setSelectedStudentId(student.id);
     }
 
     // Update
-    const handleEdit = (student) => {
-        setSelectedStudent(student);
-        setMode("edit");
+    const handleEdit = (id) => {
+        setSelectedStudentId(id);
+        setMode(MODES.EDIT);
         setIsModalOpen(true);
     };
 
@@ -42,14 +42,21 @@ export const MainWorkspace = () => {
         try{
             await deleteStudent(id);
 
+            if (selectedStudentId === id) {
+                setSelectedStudentId(null)
+            }
+
             await refetch();
         }catch(error){
             console.error(error);
         }
     }
 
+    const selectedStudent = useMemo(() => {
+        return students?.find(s => s.id === selectedStudentId);
+    }, [students, selectedStudentId])
+
     if(loading) return <p>Espere...</p>
-    
 
     return (
         <main className="flex-1 h-full flex flex-col overflow-hidden">
@@ -97,7 +104,7 @@ export const MainWorkspace = () => {
                     <div className="col-span-12 xl:col-span-4 flex flex-col gap-stack-lg">
                     
                         {/* <!-- Student Progress Detail Card --> */}
-                        <StudentProgress loading={loading} student={selectedStudent} />
+                        <StudentProgress student={selectedStudent} loading={loading} />
                     </div>
                 </div>
             </section>
