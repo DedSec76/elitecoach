@@ -3,7 +3,7 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
     
     if(!selectedStudent) return
     
-    const { full_name, weight } = selectedStudent
+    const { full_name, current_weight, goal_weight, current_body_fat, goal_body_fat } = selectedStudent
 
     return (
         <>
@@ -27,17 +27,31 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
                         <p className="text-[12px] text-on-surface-variant uppercase tracking-widest">Elite Tier Athlete</p>
                     </div>
                     
+                    {/* Target Weight Section */}
                     <div className="grid grid-cols-2 gap-stack-md mb-stack-lg">
                         <div className="p-stack-md bg-background/50 border border-white/5">
                             <p className="text-[10px] text-on-surface-variant uppercase mb-1">Current Weight</p>
-                            <p className="text-xl font-bold text-on-surface">{weight.toFixed(2)} <span className="text-xs font-normal">KG</span></p>
+                            <p className="text-xl font-bold text-on-surface">{current_weight.toFixed(2)} <span className="text-xs font-normal">KG</span></p>
                         </div>
                         <div className="p-stack-md bg-background/50 border border-white/5">
                             <p className="text-[10px] text-on-surface-variant uppercase mb-1">Target Weight</p>
-                            <p className="text-xl font-bold text-primary">92.0 <span className="text-xs font-normal">KG</span></p>
+                            <p className="text-xl font-bold text-primary">{goal_weight.toFixed(2)} <span className="text-xs font-normal">KG</span></p>
                         </div>
                     </div>
 
+                    {/* Target Body-fat Section */}
+                    <div className="grid grid-cols-2 gap-stack-md mb-stack-lg">
+                        <div className="p-stack-md bg-background/50 border border-white/5">
+                            <p className="text-[10px] text-on-surface-variant uppercase mb-1">Current Body Fat</p>
+                            <p className="text-xl font-bold text-on-surface">{current_body_fat} <span className="text-xs font-normal">%</span></p>
+                        </div>
+                        <div className="p-stack-md bg-background/50 border border-white/5">
+                            <p className="text-[10px] text-on-surface-variant uppercase mb-1">Target Body Fat</p>
+                            <p className="text-xl font-bold text-primary">{goal_body_fat} <span className="text-xs font-normal">%</span></p>
+                        </div>
+                    </div>
+
+                    {/* Recent Personal Record Section */}
                     <div className="mb-stack-lg">
                         <p className="text-[10px] text-on-surface-variant uppercase mb-stack-md font-bold tracking-widest">Recent PRs</p>
                         <div className="space-y-stack-sm">
@@ -53,6 +67,7 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
                         </div>
                     </div>
                         
+                    {/* Current Routine Section */}
                     <div>
                         <p className="text-[10px] text-on-surface-variant uppercase mb-stack-md font-bold tracking-widest">Current Routine</p>
                         <div className="p-stack-md bg-surface-container-low border border-white/5 flex items-center justify-between">
@@ -69,7 +84,7 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
             </div>
 
             {/* <!-- Quick Actions --> */}
-            <div className="titan-card p-stack-lg">
+            <div className="titan-card p-stack-lg mb-10">
                 <h3 className="font-headline-md text-sm font-bold uppercase tracking-widest mb-stack-lg border-l-2 border-primary pl-3">Quick Actions</h3>
                     <div className="flex flex-col gap-stack-sm">
                         <button className="w-full flex items-center justify-between p-stack-md bg-white/5 hover:bg-primary group transition-all text-left">

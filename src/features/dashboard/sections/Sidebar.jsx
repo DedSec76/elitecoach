@@ -2,11 +2,11 @@ import { BrandHeader } from "@/shared/components/BrandHeader"
 import {Icon} from "../../../shared/ui/Icon"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 
-export const Sidebar = () => {
+export const Sidebar = ({toggle}) => {
     const { signOut } = useAuth()
 
     return (
-        <aside className="w-64 h-full bg-surface-container-lowest border-r border-white/5 flex flex-col shrink-0">
+        <aside className={`${toggle ? "flex" : "hidden"} w-full md:w-70 h-screen bg-surface-container-lowest border-r border-white/5 md:flex flex-col shrink-0`}>
             <div className="p-stack-lg">
                 <BrandHeader />
             </div>
@@ -30,8 +30,8 @@ export const Sidebar = () => {
                 </a>
             </nav>
             
-            <div className="p-stack-lg border-t border-white/5">
-                <div className="flex items-center gap-stack-md">
+            <div className="h-34 md:h-section-gap p-stack-lg border-t border-white/5">
+                <div className="flex items-center justify-between gap-stack-md">
                     <div className="w-10 h-10 bg-primary/20 flex items-center justify-center border border-primary/30">
                         <Icon name="person"/>
                     </div>
@@ -41,7 +41,7 @@ export const Sidebar = () => {
                         <p className="text-[10px] text-on-surface-variant">ELITE LEVEL</p>
                     </div>
 
-                    <button onClick={signOut} className="text-sm">
+                    <button onClick={signOut} className="flex items-center gap-2 text-sm">
                         <Icon name="logout" />
                         Logout
                     </button>

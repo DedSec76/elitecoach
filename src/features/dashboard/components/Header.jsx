@@ -1,14 +1,15 @@
 import { Icon } from "../../../shared/ui/Icon"
 
-export const Header = ({ onCreate }) => {
+export const Header = ({activeAthletes, onCreate }) => {
 
     return (
-            <header className="h-24 px-margin-x flex items-center justify-between border-b border-white/5 bg-background/50 backdrop-blur-xl sticky top-0 z-40">
+            <header className="min-h-28 px-margin-x flex gap-2 items-center justify-between border-b border-white/5 bg-background/50 backdrop-blur-xl sticky top-0 z-40">
                 <div className="flex flex-col">
                     <h2 className="font-headline-md text-headline-md font-bold tracking-tight">Student Management</h2>
+                    
                     <div className="flex items-center gap-stack-sm text-on-surface-variant">
                         <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                        <span className="font-label-bold text-[12px] uppercase tracking-widest">24 Active Athletes</span>
+                        <span className="font-label-bold text-[12px] uppercase tracking-widest">{activeAthletes} Active Athletes</span>
                     </div>
                 </div>
                 
@@ -25,5 +26,6 @@ export const Header = ({ onCreate }) => {
                     </button>
                 </div>
             </header>
+            
     )
 }

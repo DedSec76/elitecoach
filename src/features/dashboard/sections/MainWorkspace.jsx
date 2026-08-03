@@ -2,16 +2,13 @@ import { useState } from "react"
 import { useFetchData } from "../../students/hooks/useFetchData";
 import { getStudents, deleteStudent } from "../../students/services/students.service";
 import { Header } from "../components/Header";
-import { StudentCard } from "../components/StudentCard";
-import { StudentModal } from "../components/StudentModal";
+import { StudentCard } from "../../students/components/StudentCard";
+import { StudentForm } from "../../students/components/StudentForm";
 import { StudentProgress } from "../components/StudentProgress";
+import { MODES } from "@/shared/constants/crudNames";
 
 export const MainWorkspace = () => {
-    const MODES = {
-        CREATE: "create",
-        EDIT: "edit",
-        DELETE: "delete"
-    };
+    
     // Abrir y cerrar el modal para agregar alumno
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -20,15 +17,20 @@ export const MainWorkspace = () => {
     const [selectedStudent, setSelectedStudent] = useState(null)
 
     const { data: students, loading, error, refetch } = useFetchData(getStudents)
-    
-    // Add
+
+    // Create
     const handleCreate = () => {
         setSelectedStudent(null);
         setMode("create");
         setIsModalOpen(true);
     };
 
-    // Edit
+    // Read
+    const handleView = (student)=>{
+        setSelectedStudent(student);
+    }
+
+    // Update
     const handleEdit = (student) => {
         setSelectedStudent(student);
         setMode("edit");
@@ -46,20 +48,16 @@ export const MainWorkspace = () => {
         }
     }
 
-    // Show Profile
-    const handleView = (student)=>{
-        setSelectedStudent(student);
-    }
-
     if(loading) return <p>Espere...</p>
+    
 
     return (
-        <main className="flex-1 h-full overflow-y-auto flex flex-col">
+        <main className="flex-1 h-full flex flex-col overflow-hidden">
             {/* <!-- Header (Anchor: TopAppBar variant) --> */}
-            <Header onCreate={handleCreate} />
+            <Header activeAthletes={students?.length} onCreate={handleCreate} />
 
             {/* <!-- Dashboard Content --> */}
-            <section className="p-margin-x py-stack-lg">
+            <section className="flex-1 overflow-y-auto p-margin-x py-stack-lg">
 
                 <div className="bento-grid">
                     {/* <!-- Left Column: Student List Table --> */}
@@ -74,7 +72,7 @@ export const MainWorkspace = () => {
                         </div>
 
                         {/* <!-- Table --> */}
-                        <div className="titan-card">
+                        <div className="overflow-x-auto titan-card">
                             <table className="w-full text-left">
                                 <thead className="bg-surface-container-high/50 text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">
                                     <tr>
@@ -105,7 +103,7 @@ export const MainWorkspace = () => {
             </section>
 
             {/* <!-- Modal Add New Student --> */}
-            <StudentModal 
+            <StudentForm 
                 mode={mode} 
                 student={selectedStudent}
                 refetch={refetch} 

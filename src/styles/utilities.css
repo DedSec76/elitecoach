@@ -38,3 +38,21 @@
   -webkit-background-clip: text;
   color: transparent;
 }
+
+
+/* Student Form */
+@utility formFieldCard {
+  @apply w-full p-4 bg-background/90 border border-surface-bright
+}
+
+@utility formField {
+  @apply uppercase px-5 py-3 flex flex-col gap-2
+}
+
+@utility formLegend {
+  @apply mb-2 text-lg text-on-surface text-center uppercase tracking-wide
+}
+
+@utility formLegendSpan {
+  @apply text-primary font-black tracking-wider
+}
