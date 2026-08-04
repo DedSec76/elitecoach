@@ -1,12 +1,21 @@
+import { useToggle } from "@/shared/hooks/useToggle"
 import { QuickActionButton } from "./QuickActionButton"
+import { ProgressForm } from "@/features/progress/components/ProgressForm";
 
-export const StudentProgress = ({ student: selectedStudent, loading }) => {
-    if(!selectedStudent) return
+export const StudentProgress = ({ refetch, student: selectedStudent, loading }) => {
+    const { toggle, open, close } = useToggle();
 
-    const { full_name, current_weight, goal_weight, current_body_fat, goal_body_fat } = selectedStudent
+    if(!selectedStudent) return null;
+
+    const { id, full_name, current_weight, goal_weight, current_body_fat, goal_body_fat } = selectedStudent
+
+    const handleAddRoutine = () => {
+        open()
+    } 
 
     return (
         <>
+            {/* <!-- Athlete Stats --> */}
             <div className="titan-card p-stack-lg relative overflow-hidden" id="student-detail-card">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 -mr-16 -mt-16 rotate-45 pointer-events-none"></div>
                     <div className="flex justify-between items-start mb-stack-lg">
@@ -86,16 +95,19 @@ export const StudentProgress = ({ student: selectedStudent, loading }) => {
             {/* <!-- Quick Actions --> */}
             <div className="titan-card p-stack-lg mb-10">
                 <h3 className="font-headline-md text-sm font-bold uppercase tracking-widest mb-stack-lg border-l-2 border-primary pl-3">Quick Actions</h3>
-                    <div className="flex flex-col gap-stack-sm">
-                        <QuickActionButton name_action={"Assign New Routine"} name_icon="playlist_add" />
+                <div className="flex flex-col gap-stack-sm">
+                    <QuickActionButton name_action={"Assign New Routine"} name_icon="playlist_add" />
 
-                        <QuickActionButton name_action={"Log Progress"} name_icon="arrow_upload_progress" />
+                    <QuickActionButton handleClick={handleAddRoutine} name_action={"Log Progress"} name_icon="arrow_upload_progress" />
                         
-                        <QuickActionButton name_action={"Log Achievement"} name_icon="emoji_events" />
+                    <QuickActionButton name_action={"Log Achievement"} name_icon="emoji_events" />
 
-                        <QuickActionButton name_action={"Flag for Review"} name_icon="flag" />
-                    </div>
+                    <QuickActionButton name_action={"Flag for Review"} name_icon="flag" bg="error" />
+                </div>
             </div>
+
+            {/* <!-- New Routine Modal --> */}
+            <ProgressForm refetch={refetch} id={id} toggle={toggle} close={close}  />
         </>
     )
 }

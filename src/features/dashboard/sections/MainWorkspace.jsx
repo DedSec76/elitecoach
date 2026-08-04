@@ -56,6 +56,7 @@ export const MainWorkspace = () => {
         return students?.find(s => s.id === selectedStudentId);
     }, [students, selectedStudentId])
 
+
     if(loading) return <p>Espere...</p>
 
     return (
@@ -104,7 +105,7 @@ export const MainWorkspace = () => {
                     <div className="col-span-12 xl:col-span-4 flex flex-col gap-stack-lg">
                     
                         {/* <!-- Student Progress Detail Card --> */}
-                        <StudentProgress student={selectedStudent} loading={loading} />
+                        <StudentProgress refetch={refetch} student={selectedStudent} loading={loading} />
                     </div>
                 </div>
             </section>
