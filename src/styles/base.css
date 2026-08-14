@@ -32,6 +32,14 @@
     @apply text-background px-stack-lg py-3 font-label-bold text-label-bold hover:bg-on-primary transition-transform active:scale-95 flex items-center gap-2
   }
 
+  .filterActive {
+    @apply border-primary text-primary
+  }
+
+  .filterNotActive {
+    @apply border-transparent text-on-surface-variant hover:text-on-surface
+  }
+
   .icon {
     font-family: "Material Symbols Outlined";
     font-style: normal;

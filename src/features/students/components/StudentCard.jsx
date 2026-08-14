@@ -3,25 +3,23 @@ import { ActionButton } from "../../dashboard/components/ActionButton"
 import { GOALS } from "@/shared/constants/goals";
 import { calculateProgress } from "../utils/calculateProgress";
 import { calculateMaintenanceDifference } from "../utils/calculateMaintenanceDifference";
+import { ProgressBar } from "@/features/progress/components/ProgressBar";
+import { current_week } from "@/features/progress/utils/progressCurrentWeek";
+import { MaintenanceCard } from "@/features/progress/components/MaintenanceCard";
 
 const MAINTAIN = 3;
-export const StudentCard = ({student, onEdit, onDelete, onView}) => {
+export const StudentCard = ({ student, onEdit, onDelete, onView }) => {
     const {id, full_name, goal, initial_weight:initial, current_weight:current, goal_duration_weeks, created_at} = student;
 
     const goalFind = GOALS.find(g => g.value === goal)?.label ?? "Unfocused"
 
     const progressBar = calculateProgress(student);
-    const difference = calculateMaintenanceDifference(student)
-    const isOutOfRange = difference > 1;
+    const weightDifference = calculateMaintenanceDifference(student);
 
-    // Calculate range
-    const MIN_RANGE = initial - 1;
-    const MAX_RANGE = initial + 1;
-
-    const operationSign = difference >= 0 ? "+" : "-"
+    const currentWeek = current_week(student.created_at);
 
     return (
-        <>
+        <> 
             <tr className="hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => onView(student)}>
                 {/* Athlete */}
                 <td className="px-stack-sm lg:px-stack-lg py-stack-lg">
@@ -45,27 +43,10 @@ export const StudentCard = ({student, onEdit, onDelete, onView}) => {
                 <td className="px-stack-sm lg:px-stack-lg py-stack-lg">
                     <div className="w-32 lg:w-48">
                     { goal === MAINTAIN
-                    ?   
-                        <div>
-                            <p className="text-[11px]"><span>Initial: </span> {initial} Kg</p>
-                            <p className="text-[11px]"><span>Range: </span> {MIN_RANGE} Kg - {MAX_RANGE} Kg</p>
-                            <p className="text-[11px]"><span>Current: </span> {current} Kg</p>
-                            <p className="text-[11px]"><span>Difference: </span> {operationSign}{difference} Kg</p>
-                            <p className={`text-[11px] ${isOutOfRange ? "text-error" : "text-primary"}`}>
-                                {isOutOfRange ? "❌ Fuera de Rango" : "✅ En rango"}
-                            </p>
-                        </div>
-                        
+                    ?
+                        <MaintenanceCard difference={weightDifference} initial={initial} current={current} />
                     :   
-                        <>
-                            <div className="flex justify-between items-center mb-2">
-                                <span className="text-[11px] text-on-surface-variant">Week 1/{goal_duration_weeks}</span>
-                                <span className="text-[11px] text-primary font-bold">{progressBar}%</span>
-                            </div>
-                            <div className="h-1.5 w-full bg-surface-container-highest">
-                                    <div className="h-full bg-primary" style={{width: `${progressBar}%`}}></div>
-                            </div>
-                        </>
+                        <ProgressBar currentWeek={currentWeek} goal_duration_weeks={goal_duration_weeks} progressBar={progressBar}  />
                     }
                     </div>
                 </td>

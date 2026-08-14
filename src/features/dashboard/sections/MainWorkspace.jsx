@@ -7,17 +7,24 @@ import { StudentForm } from "../../students/components/StudentForm";
 import { StudentProgress } from "../components/StudentProgress";
 import { MODES } from "@/shared/constants/crudNames";
 import { useMemo } from "react";
+import { FiltersTabsGoals } from "../components/FiltersTabsGoals";
+import { getAllGoals } from "../services/goals.service";
+import { filterStudentPerGoal } from "@/features/students/utils/filterStudentPerGoal";
+import { calculateStudentsPerGoal } from "@/features/students/utils/calculateStudentsPerGoal";
 
 export const MainWorkspace = () => {
+    const [search, setSearch] = useState("");
     // Abrir y cerrar el modal para agregar alumno
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const [mode, setMode] = useState(MODES.CREATE)
-    
+
     const [selectedStudentId, setSelectedStudentId] = useState(null)
+    const [goalFilter, setGoalFilter] = useState("all")
 
+    const { data: goals } = useFetchData(getAllGoals)
     const { data: students, loading, error, refetch } = useFetchData(getStudents)
-
+    
     // Create
     const handleCreate = () => {
         setSelectedStudentId(null);
@@ -56,13 +63,26 @@ export const MainWorkspace = () => {
         return students?.find(s => s.id === selectedStudentId);
     }, [students, selectedStudentId])
 
-
     if(loading) return <p>Espere...</p>
 
+    const filterPerGoal = (e) => {
+        const filter = e.currentTarget.dataset.filter
+        
+        if(filter.trim() !== "" && Number.isInteger(Number(filter))) {
+            setGoalFilter(Number(filter))
+        } else {
+            setGoalFilter(filter)
+        }
+    }
+    
+    const filteredStudents = filterStudentPerGoal(search, goalFilter, students)
+            
+    const totalStudentsGoal = calculateStudentsPerGoal(students)
+    
     return (
         <main className="flex-1 h-full flex flex-col overflow-hidden">
             {/* <!-- Header (Anchor: TopAppBar variant) --> */}
-            <Header activeAthletes={students?.length} onCreate={handleCreate} />
+            <Header setSearch={setSearch} activeAthletes={students?.length} onCreate={handleCreate} />
 
             {/* <!-- Dashboard Content --> */}
             <section className="flex-1 overflow-y-auto p-margin-x py-stack-lg">
@@ -72,12 +92,7 @@ export const MainWorkspace = () => {
                     <div className="col-span-12 xl:col-span-8 flex flex-col gap-stack-lg">
                     
                         {/* <!-- List Filters/Tabs --> */}
-                        <div className="flex border-b border-white/5 gap-stack-lg">
-                            <button className="pb-stack-md border-b-2 border-primary text-primary font-label-bold text-label-bold">All Members</button>
-                            <button className="pb-stack-md border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-bold text-label-bold">Bulking (12)</button>
-                            <button className="pb-stack-md border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-bold text-label-bold">Cutting (8)</button>
-                            <button className="pb-stack-md border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-bold text-label-bold">Maintenance (4)</button>
-                        </div>
+                        <FiltersTabsGoals goalFilter={goalFilter} totalStudents={totalStudentsGoal} handleClick={filterPerGoal} goals={goals} />
 
                         {/* <!-- Table --> */}
                         <div className="overflow-x-auto titan-card">
@@ -92,8 +107,11 @@ export const MainWorkspace = () => {
                                 </thead>
 
                                 <tbody className="divide-y divide-white/5">
-                                    { error ? <p className="text-2xl text-on-error">{error}</p> 
-                                    : students.map(s => (
+                                    { error ? (
+                                        <tr><td colSpan="4" className="px-stack-sm py-4 text-2xl text-on-error">{error}</td></tr>
+                                    ) : filteredStudents.length === 0 ? (
+                                        <tr><td colSpan="4" className="px-stack-sm py-4 text-center md:text-lg text-error">No students found.</td></tr>
+                                    ) : filteredStudents?.map(s => (
                                         <StudentCard key={s.id} student={s} onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
                                     )) }
                                 </tbody>

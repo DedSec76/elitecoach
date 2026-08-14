@@ -9,7 +9,7 @@ export const DashboardPage = () => {
     
     return (    
         <>      
-            <HamburgerBtn toggle={toggle} handleClick={onToggle} className="rounded-full bg-background/60 fixed top-28 px-2 left-2 z-5000" />
+            <HamburgerBtn toggle={toggle} handleClick={onToggle} className="rounded-full bg-background/60 fixed top-31 px-2 left-2 z-5000" />
 
             <div className="flex h-screen w-full overflow-hidden">
                 <Sidebar toggle={toggle} />
