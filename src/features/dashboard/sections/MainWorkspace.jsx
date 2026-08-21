@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useFetchData } from "../../students/hooks/useFetchData";
+import { useFetchData } from "../../../shared/hooks/useFetchData";
 import { getStudents, deleteStudent } from "../../students/services/students.service";
 import { Header } from "../components/Header";
 import { StudentCard } from "../../students/components/StudentCard";

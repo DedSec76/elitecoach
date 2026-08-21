@@ -1,17 +1,35 @@
 import { useToggle } from "@/shared/hooks/useToggle"
 import { QuickActionButton } from "./QuickActionButton"
 import { ProgressForm } from "@/features/progress/components/ProgressForm";
+import { AchievementForm } from "@/features/achievement/components/AchievementForm";
+import { useState } from "react";
+import { RoutineForm } from "@/features/routines/components/RoutineForm";
+import { useQuery } from "@tanstack/react-query";
+import { getAchievementPerStudent } from "@/features/achievement/services/achievement.service";
 
+const quickActions = [
+    {dataset: "addRoutine", title_action: "Assign New Routine", name_icon: "playlist_add", component: RoutineForm},
+    {dataset: "addProgress", title_action: "Log Progress", name_icon: "arrow_upload_progress", component: ProgressForm},
+    {dataset: "addAchievement", title_action: "Log Achievement", name_icon: "emoji_events", component: AchievementForm},
+    {dataset: "flagReview", title_action: "Flag for Review", name_icon: "flag", bg: "error"}
+]
 export const StudentProgress = ({ refetch, student: selectedStudent, loading }) => {
+    const { data: achievement } = useQuery({queryKey: ["achievement", selectedStudent?.id], queryFn: () => getAchievementPerStudent(selectedStudent?.id), enabled: !!selectedStudent?.id})
+    const [quickAction, setQuickAction] = useState(null);
     const { toggle, open, close } = useToggle();
-
+    
     if(!selectedStudent) return null;
 
     const { id, full_name, current_weight, goal_weight, current_body_fat, goal_body_fat } = selectedStudent
-
-    const handleAddRoutine = () => {
+    
+    const handleClick = ({ currentTarget }) => {
+        const btnName = currentTarget.dataset.action
         open()
-    } 
+        setQuickAction(btnName)
+    }
+
+    const selectedAction = quickActions.find(q => q.dataset === quickAction);
+    const ActionComponent = selectedAction?.component
 
     return (
         <>
@@ -64,15 +82,14 @@ export const StudentProgress = ({ refetch, student: selectedStudent, loading }) 
                     <div className="mb-stack-lg">
                         <p className="text-[10px] text-on-surface-variant uppercase mb-stack-md font-bold tracking-widest">Recent PRs</p>
                         <div className="space-y-stack-sm">
-                            <div className="flex justify-between items-center p-3 bg-white/5 border-l-2 border-primary">
-                                <span className="text-sm font-label-bold">Deadlift</span>
-                                <span className="text-sm font-bold text-primary">225 KG</span>
-                            </div>
-
-                            <div className="flex justify-between items-center p-3 bg-white/5 border-l-2 border-primary">
-                                <span className="text-sm font-label-bold">Squat</span>
-                                <span className="text-sm font-bold text-primary">180 KG</span>
-                            </div>
+                            { achievement?.length > 0 ? (
+                                achievement?.map(a => (
+                                    <div key={a.id} className="flex justify-between items-center p-3 bg-white/5 border-l-2 border-primary">
+                                        <span className="text-sm font-label-bold">{a.exercises.exercise}</span>
+                                        <span className="text-sm font-bold text-primary">{a.weight} KG</span>
+                                    </div>
+                                ))
+                            ) :  <p className="text-center p-3 bg-white/5 border-l-2 border-error-container text-error font-bold">It's no registered records yet.</p>}
                         </div>
                     </div>
                         
@@ -96,18 +113,15 @@ export const StudentProgress = ({ refetch, student: selectedStudent, loading }) 
             <div className="titan-card p-stack-lg mb-10">
                 <h3 className="font-headline-md text-sm font-bold uppercase tracking-widest mb-stack-lg border-l-2 border-primary pl-3">Quick Actions</h3>
                 <div className="flex flex-col gap-stack-sm">
-                    <QuickActionButton name_action={"Assign New Routine"} name_icon="playlist_add" />
-
-                    <QuickActionButton handleClick={handleAddRoutine} name_action={"Log Progress"} name_icon="arrow_upload_progress" />
-                        
-                    <QuickActionButton name_action={"Log Achievement"} name_icon="emoji_events" />
-
-                    <QuickActionButton name_action={"Flag for Review"} name_icon="flag" bg="error" />
+                    { quickActions 
+                    ? quickActions.map(action => (
+                        <QuickActionButton key={action.dataset} handleClick={handleClick} dataset={action.dataset} name_action={action.title_action} name_icon={action.name_icon} bg={action.bg} />
+                    ))
+                    : <p>Ocurrió algo inesperado</p> }
                 </div>
             </div>
 
-            {/* <!-- New Routine Modal --> */}
-            <ProgressForm refetch={refetch} id={id} toggle={toggle} close={close}  />
+            { ActionComponent && <ActionComponent id={id} refetch={refetch} toggle={toggle} close={close} /> }
         </>
     )
 }
