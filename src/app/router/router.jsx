@@ -2,10 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import { LandingLayout } from "../layouts/LandingLayout";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { LandingPage } from "../../features/landing/pages/LandingPage";
-import { DashboardPage } from "../../features/dashboard/pages/DashboardPage";
+import { StudentPage } from "../../features/dashboard/pages/StudentPage";
 import { LoginLayout } from "../layouts/LoginLayout";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { RoutinesPage } from "@/features/routines/pages/RoutinesPage";
+import { AnaliticsPage } from "@/features/analytics/pages/AnalyticsPage";
+import { SettingsPage } from "@/features/auth/pages/SettingsPage";
 
 export const router = createBrowserRouter([
     {
@@ -27,7 +30,19 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <DashboardPage />
+                        element: <StudentPage />
+                    },
+                    {
+                        path: "routines",
+                        element: <RoutinesPage />
+                    },
+                    {
+                        path: "analytics",
+                        element: <AnaliticsPage />
+                    },
+                    {
+                        path: "settings",
+                        element: <SettingsPage />
                     },
                 ]
             },

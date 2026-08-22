@@ -8,7 +8,7 @@ import { current_week } from "@/features/progress/utils/progressCurrentWeek";
 import { MaintenanceCard } from "@/features/progress/components/MaintenanceCard";
 
 const MAINTAIN = 3;
-export const StudentCard = ({ student, onEdit, onDelete, onView }) => {
+export const StudentTableRow = ({ student, onEdit, onDelete, onView }) => {
     const {id, full_name, goal, initial_weight:initial, current_weight:current, goal_duration_weeks, created_at} = student;
 
     const goalFind = GOALS.find(g => g.value === goal)?.label ?? "Unfocused"

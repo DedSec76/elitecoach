@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useFetchData } from "../../../shared/hooks/useFetchData";
 import { getStudents, deleteStudent } from "../../students/services/students.service";
 import { Header } from "../components/Header";
-import { StudentCard } from "../../students/components/StudentCard";
 import { StudentForm } from "../../students/components/StudentForm";
 import { StudentProgress } from "../components/StudentProgress";
 import { MODES } from "@/shared/constants/crudNames";
@@ -11,8 +10,9 @@ import { FiltersTabsGoals } from "../components/FiltersTabsGoals";
 import { getAllGoals } from "../services/goals.service";
 import { filterStudentPerGoal } from "@/features/students/utils/filterStudentPerGoal";
 import { calculateStudentsPerGoal } from "@/features/students/utils/calculateStudentsPerGoal";
+import { StudentTableRow } from "@/features/students/components/StudentTableRow";
 
-export const MainWorkspace = () => {
+export const StudentPage = () => {
     const [search, setSearch] = useState("");
     // Abrir y cerrar el modal para agregar alumno
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -112,7 +112,7 @@ export const MainWorkspace = () => {
                                     ) : filteredStudents.length === 0 ? (
                                         <tr><td colSpan="4" className="px-stack-sm py-4 text-center md:text-lg text-error">No students found.</td></tr>
                                     ) : filteredStudents?.map(s => (
-                                        <StudentCard key={s.id} student={s} onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
+                                        <StudentTableRow key={s.id} student={s} onEdit={handleEdit} onDelete={handleDelete} onView={handleView} />
                                     )) }
                                 </tbody>
                             </table>
